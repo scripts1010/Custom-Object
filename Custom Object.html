@@ -1,0 +1,34 @@
+
+
+
+
+
+<img src="../BackgroundImageGenerator.axd?className=StyledButton&classProperties=caption:Add User;iconSetStyle:VistaRound;baseColor:%23DDDDDD;disabled:False"
+    onclick="setRecordPermission()">
+
+
+
+<script type="text/javascript">
+    var setUser = {
+        fldId: '35407',
+        usersName: parent.parent.ArcherApp.globals.displayName,
+        usersId: parent.parent.ArcherApp.globals.userId,
+        itemType: 'user'
+    };  // Use 'group' if you're adding a group  
+    function setRecordPermission() {
+        var RPFieldRoot = ArcherTech.UI.ClientContentManager.GetInstance().getFieldById(setUser.fldId), UsrArray = [];
+        var RPFieldRootId = RPFieldRoot.clientId;
+        UsrArray.push({
+            name: setUser.usersName,
+            value: setUser.usersId + ':' + (setUser.itemType == 'group' ? 3 : 1)
+        });
+        var serialized = Sys.Serialization.JavaScriptSerializer.serialize(UsrArray);
+        $('div[id*="' + RPFieldRootId + '_"] div:first-child').text(setUser.usersName);
+        $('input[id*="' + RPFieldRootId + '_"]').val(serialized);
+        if (setUser.itemType == 'user') {
+            $('#SelectedUsers' + setUser.fldId).val(setUser.usersId);
+        } else if (setUser.itemType == 'group') {
+            $('#SelectedGroups' + setUser.fldId).val(setUser.usersId);
+        }
+    }
+</script>
